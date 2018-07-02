@@ -23,8 +23,13 @@ class Timer:
         self.interval = self.end - self.start
         write("ELAPSED %s seconds %f", self.name, self.interval)
 
-lib = './libapsp.so'
-apsp = cdll.LoadLibrary(lib)
+try:
+    lib = './libapsp_gpu.so'
+    apsp = cdll.LoadLibrary(lib)
+except:
+    lib = './libapsp.so'
+    apsp = cdll.LoadLibrary(lib)
+
 write("LOAD LIBRARY %s", lib)
 
 with Timer("READ"):
