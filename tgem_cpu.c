@@ -13,7 +13,7 @@ void tgem(uint64_t n, double *c) {
   for (uint64_t k = 0; k < n; ++k)
     for (uint64_t i = 0; i < n; ++i)
       for (uint64_t j = 0; j < n; ++j)
-        c[idx(n,i,j)] = min(c[idx(n,i,j)], c[idx(n,i,k)] + c[idx(n,k,i)]);
+        c[idx(n,i,j)] = min(c[idx(n,i,j)], c[idx(n,i,k)] + c[idx(n,k,j)]);
 }
 
 #else
@@ -28,7 +28,7 @@ void tgem(uint64_t n, double *c) {
           for (uint64_t j = J; j < min(J+t, n); j++) {
             double x = INFINITY;
             for (uint64_t k = K; k < min(K+t, n); k++)
-              x = min(x, c[idx(n,i,k)] + c[idx(n,k,i)]);
+              x = min(x, c[idx(n,i,k)] + c[idx(n,k,j)]);
             c[idx(n,i,j)] = min(c[idx(n,i,j)] , x);
           }
 }

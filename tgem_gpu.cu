@@ -14,7 +14,7 @@ __global__ void tgem_kernel(uint64_t n, double *c) {
   if (i >= n || j >= n) return;
 
   for (uint64_t k = 0; k < n; ++k)
-    c[idx(n,i,j)] = MIN(c[idx(n,i,j)], c[idx(n,i,k)] + c[idx(n,k,i)]);
+    c[idx(n,i,j)] = MIN(c[idx(n,i,j)], c[idx(n,i,k)] + c[idx(n,k,j)]);
 }
 
 extern "C" {
