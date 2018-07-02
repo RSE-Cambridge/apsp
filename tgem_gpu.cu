@@ -33,6 +33,7 @@ void tgem(uint64_t n, double *c) {
   tgem_kernel<<<dimGrid, dimBlock>>>(n, d_c);
 
   cudaMemcpy(c, d_c, sz, cudaMemcpyDeviceToHost);
+  cudaFree(d_c);
 }
 
 }
