@@ -1,9 +1,9 @@
 #include "apsp.h"
 
-inline double min(double a, double b) {
+static inline double min(double a, double b) {
   return a < b ? a : b;
 }
-inline uint64_t idx(uint64_t n, uint64_t i, uint64_t j) {
+static inline uint64_t idx(uint64_t n, uint64_t i, uint64_t j) {
   return j + n*i;
 }
 
