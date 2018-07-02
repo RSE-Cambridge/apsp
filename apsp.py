@@ -20,7 +20,8 @@ class Timer:
         return self
     def __exit__(self, *args):
         self.end = clock()
-        write("ELAPSED %s seconds %f", self.name, self.end - self.start)
+        self.interval = self.end - self.start
+        write("ELAPSED %s seconds %f", self.name, self.interval)
 
 lib = './libapsp.so'
 apsp = cdll.LoadLibrary(lib)
@@ -38,7 +39,7 @@ write("READ %d NODES", nodes)
 edges = len(u)
 write("READ %d EDGES", edges)
 
-node_t = c_int * edges
+node_t = c_uint64 * edges
 weight_t = c_double * edges
 
 u = pointer(node_t(*u))
@@ -48,12 +49,12 @@ w = pointer(weight_t(*w))
 c_t = c_double * nodes * nodes
 c = pointer(c_t())
 
-c_size = sizeof(c_t)
-for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
-    if abs(c_size) < 1024.0:
-        write("ALLOCATE result array SIZE %d%sB", c_size, unit)
-        break
-    c_size /= 1024.0
+def str_human(n, suffix):
+    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+        if abs(n) < 1024.0:
+            return '%d %s %s' % (n, unit, suffix)
+        n /= 1024.0
+write("ALLOCATE result array SIZE %s", str_human(sizeof(c_t), 'B'))
 
 def show_result(c):
     print('%17s '%'--', ' '.join("%17d"%y for y in range(0,nodes)))
@@ -65,8 +66,9 @@ with Timer("INIT"):
 #print("INITIAL")
 #show_result(c.contents)
 
-with Timer("TGEM"):
+with Timer("TGEM") as t:
     apsp.tgem(nodes, c)
+write("PERFORMANCE TGEM %s", str_human(nodes*nodes*nodes/t.interval, 'FLOP'))
 
 #print("RESULT")
 #show_result(c.contents)
