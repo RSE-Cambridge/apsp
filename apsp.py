@@ -68,12 +68,15 @@ def show_result(c):
 
 with Timer("INIT"):
     apsp.init(nodes, edges, u, v, w, c)
-#print("INITIAL")
-#show_result(c.contents)
+
+if nodes < 20:
+    print("INITIAL")
+    show_result(c.contents)
 
 with Timer("TGEM") as t:
     apsp.tgem(nodes, c)
 write("PERFORMANCE TGEM %s", str_human(nodes*nodes*nodes/t.interval, 'FLOP'))
 
-#print("RESULT")
-#show_result(c.contents)
+if nodes < 20:
+    print("RESULT")
+    show_result(c.contents)
