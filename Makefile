@@ -1,5 +1,5 @@
 
-CFLAGS := -std=c99 -fPIC -O3 -Wall -Wextra
+CFLAGS := -std=c99 -fPIC -DBLOCKING=64
 
 libapsp.so : apsp.o
-	$(CC) -shared -o $@ $^
+	$(CC) -shared -o $@ $(LIBS) $^
