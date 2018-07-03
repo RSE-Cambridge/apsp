@@ -28,12 +28,10 @@ __global__ void tgem_kernel(uint64_t n, double *a, double *c) {
 }
 
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
-inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
-{
-   if (code != cudaSuccess)
-   {
-      fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
-      if (abort) exit(code);
+inline void gpuAssert(cudaError_t code, const char *file, int line) {
+   if (code != cudaSuccess) {
+      fprintf(stderr,"GPU error: %s %s %d\n", cudaGetErrorString(code), file, line);
+      exit(code);
    }
 }
 
